@@ -1,22 +1,26 @@
 'use strict'
 
-const express = require('express')
-const bodyParser = require('body-parser')
-const request = require('request')
-const app = express()
+const express = require('express');
+const bodyParser = require('body-parser');
+const request = require('request');
+const mongoose = require('mongoose');
+const app = express();
 
-app.set('port', (process.env.PORT || 5000))
+app.set('port', (process.env.PORT || 5000));
+
+// Set up Mongoose connection
+mongoose.connect(databse[process.env.NODE_ENV].url);
 
 // Process application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({extended: false}));
 
 // Process application/json
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
 // Index route
 app.get('/', function (req, res) {
 	res.send('Hello world, I am a chat bot')
-})
+});
 
 // for Facebook verification
 app.get('/webhook/', function (req, res) {
@@ -24,12 +28,12 @@ app.get('/webhook/', function (req, res) {
 		res.send(req.query['hub.challenge'])
 	}
 	res.send('Error, wrong token')
-})
+});
 
 // Spin up the server
 app.listen(app.get('port'), function() {
 	console.log('running on port', app.get('port'))
-})
+});
 
 // handles event types
 app.post('/webhook', function (req, res) {
@@ -46,9 +50,11 @@ app.post('/webhook', function (req, res) {
         console.log(event.message.text);
         sendMessengerTextMessage(event.sender.id, event.message.text);
         } else if (event.postback) {
-        //handles postbacks
-        var welcome_message = "Hello, my name is Platty the PennApps bot. How may I help you?";
-        sendMessengerTextMessage(event.sender.id, welcome_message);
+            if(event.postback.payload === "Greeting") {
+                //handles postbacks
+                var welcome_message = "Hello, my name is Platty the PennApps bot. How may I help you?";
+                sendMessengerTextMessage(event.sender.id, welcome_message);
+            }
       }
       });
     });
@@ -57,7 +63,7 @@ app.post('/webhook', function (req, res) {
   }
 });
 
-// sends message to user
+// creates message object
 function sendMessengerTextMessage(recipientId, messageText) {
   return sendMessengerResponse({
     recipient: {
@@ -67,9 +73,9 @@ function sendMessengerTextMessage(recipientId, messageText) {
       text: messageText
     }
   });
-}
+};
 
-// handle message
+// sends message response to user
 function sendMessengerResponse(messageData) {
   return request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
@@ -83,4 +89,4 @@ function sendMessengerResponse(messageData) {
       console.log("Message sent to" + messageData.recipient.id);
   }
   });
-}
+};
