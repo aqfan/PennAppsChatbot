@@ -31,19 +31,6 @@ app.listen(app.get('port'), function() {
 	console.log('running on port', app.get('port'))
 })
 
-app.post('/webhook', function (req, res) {
-    var data = {
-        setting_type: "call_to_actions",
-        thread_state: "new_thread",
-        call_to_actions: [
-            {
-                payload: "Greeting"
-            }
-        ]
-    };
-
-    return data;
-})
 // handles event types
 app.post('/webhook', function (req, res) {
   var data = req.body;
