@@ -44,11 +44,11 @@ app.post('/webhook', function (req, res) {
         if (event.message) {
         // Handles messages
         console.log(event.message.text);
-          sendMessengerTextMessage(event.sender.id, event.message.text);
+        sendMessengerTextMessage(event.sender.id, event.message.text);
         } else if (event.postback) {
-            //handles postbacks
-            var welcome_message = "Hello, my name is Platty the PennApps bot. How may I help you?";
-          sendMessengerTextMessage(event.sender.id, welcome_message);
+        //handles postbacks
+        var welcome_message = "Hello, my name is Platty the PennApps bot. How may I help you?";
+        sendMessengerTextMessage(event.sender.id, welcome_message);
       }
       });
     });
