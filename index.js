@@ -3,13 +3,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
+
+//database
 const mongoose = require('mongoose');
+const database = mongoose.connect(process.env.MONGODB_URI);
+const userService = require('./services/user.service');
+
 const app = express();
 
 app.set('port', (process.env.PORT || 5000));
-
-// Set up Mongoose connection
-mongoose.connect(databse[process.env.NODE_ENV].url);
 
 // Process application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: false}));
@@ -35,33 +37,21 @@ app.listen(app.get('port'), function() {
 	console.log('running on port', app.get('port'))
 });
 
-// handles event types
-app.post('/webhook', function (req, res) {
-  var data = req.body;
+// handles callbacks
+var callbacks = require('./routes/callbacks');
+app.post('/webhook', callbacks);
 
-  if (data.object === 'page') {
-    data.entry.forEach(function(entry) {
-      var pageId = entry.id;
-      var timeOfEvent = entry.time;
+// processes postbacks
+function processPostback(event) {
+    var senderId = event.sender.id;
 
-      entry.messaging.forEach(function(event) {
-        if (event.message) {
-        // Handles messages
-        console.log(event.message.text);
-        sendMessengerTextMessage(event.sender.id, event.message.text);
-        } else if (event.postback) {
-            if(event.postback.payload === "Greeting") {
-                //handles postbacks
-                var welcome_message = "Hello, my name is Platty the PennApps bot. How may I help you?";
-                sendMessengerTextMessage(event.sender.id, welcome_message);
-            }
-      }
-      });
-    });
+    if(event.postback.payload === "Greeting") {
+        userService.saveUser(senderId);
+        var welcome_message = "Hello, my name is Platty the PennApps bot. How may I help you?";
+        sendMessengerTextMessage(event.sender.id, welcome_message);
+    }
 
-    res.sendStatus(200);
-  }
-});
+}
 
 // creates message object
 function sendMessengerTextMessage(recipientId, messageText) {
