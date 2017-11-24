@@ -2,13 +2,15 @@
 const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var UserSchema = new Schema({
+var MentorSchema = new Schema({
   facebookId : {
     type : String,
     required : true
   },
+  language: String,
+  available: Boolean,
   firstName : String,
   lastName : String
 });
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('Mentor', MentorSchema);
