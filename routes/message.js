@@ -3,7 +3,6 @@ var apiAiClient = require('apiai')(API_AI_TOKEN);
 var request = require('request');
 
 function processMessage (event) {
-    console.log(event.message.text);
     sendMessengerTextMessage(event.sender.id, event.message.text);
 }
 
@@ -14,15 +13,25 @@ function sendMessengerTextMessage(recipientId, messageText) {
   });
 
   apiaiSession.on('response', function(response) {
-      switch(response.result.action) {
-          case 'need_mentor':
-            console.log(response);
-            messageText = response.fulfillment.speech;
-            break;
-      }
-      console.log(response.result.action);
-      console.log(response.result.contexts.name);
+      var language = '';
 
+      if (response.result.contexts[0] &&
+          response.result.contexts[0].name === 'mentor-followup') {
+          switch(response.result.action) {
+              case 'need_mentor':
+                messageText = response.result.fulfillment.speech;
+                break;
+              case 'mentor.mentor-Java':
+              case 'mentor.mentor-JavaScript':
+              case 'mentor.mentor-Ruby':
+              case 'mentor.mentor-HTML/CSS':
+                language = response.result.parameters.language;
+                messageText = response.result.fulfillment.speech;
+                break;
+          }
+      }
+
+      console.log(language);
       return sendMessengerResponse({
         recipient: {
           id: recipientId

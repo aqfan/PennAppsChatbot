@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
 
-//database
+// database
 const mongoose = require('mongoose');
 const database = mongoose.connect(process.env.MONGODB_URI);
 
