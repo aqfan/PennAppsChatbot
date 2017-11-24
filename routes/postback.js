@@ -1,7 +1,5 @@
-var express = require('express');
-var router = express.Router();
 var message = require('./message');
-var userService = require('../services/user.service');
+var userService = require('../services/saveuser');
 
 // processes postbacks
 function processPostback(event) {
