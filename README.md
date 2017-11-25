@@ -1,9 +1,10 @@
 # PennAppsChatbot
 
-A facebook messenger bot for the PennApps facebook page. 
+A facebook messenger bot for the PennApps facebook page.
 
 ### Testing
-Go to https://www.facebook.com/Testpennapps-1456157567831462/ and send a message so you can be added as a test user; wait for a confirmation that you have been added. The app is currently going through the approval process so the app may or may not be live when you test it as a public user. It's currently not deployed on PennApps' official page yet since it's in development.
+Message https://www.facebook.com/Testpennapps-1456157567831462/
+It's currently not deployed on PennApps' official page yet since it's in development.
 
 Sample questions and answers:
 
@@ -34,7 +35,7 @@ Sample request to be added as a mentor:
   - facebookID
   - first name
   - last name
-  
+
 * Saves user as a mentor if requested
   - facebookID
   - first name
@@ -45,7 +46,7 @@ Sample request to be added as a mentor:
   - asks for user's language of choice
   - matches user with a mentor
   - gives user mentor's name
-  
+
  * Automatically answers FAQs
 
 ### Future features to be implemented

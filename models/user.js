@@ -8,7 +8,8 @@ var UserSchema = new Schema({
     required : true
   },
   firstName : String,
-  lastName : String
+  lastName : String,
+  pauseAI : Boolean
 });
 
 module.exports = mongoose.model('User', UserSchema);

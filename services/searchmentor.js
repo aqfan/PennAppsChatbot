@@ -1,11 +1,7 @@
 const message = require('../routes/message');
 const Mentor = require('../models/mentor');
 
-module.exports = {
-  searchForMentor : searchForMentor
-};
-
-function searchForMentor(recipientId, language) {
+var searchForMentor = function (recipientId, language) {
   Mentor.findOne({language: language, available: true}, function (err, user) {
     if (err) {
       console.log(err);
@@ -29,4 +25,8 @@ function searchForMentor(recipientId, language) {
       });
     }
   });
-}
+};
+
+module.exports = {
+  searchForMentor : searchForMentor
+};

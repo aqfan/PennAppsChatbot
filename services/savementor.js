@@ -1,10 +1,6 @@
 const User = require('../models/user');
 const Mentor = require('../models/mentor');
 
-module.exports = {
-  saveMentor : saveMentor
-};
-
 // Get user data Messenger Platform User Profile API and save it on the MongoDB
 var saveMentor = function (facebookId, language) {
   User.findOne({facebookId : facebookId}, 'firstName lastName', function (err, userData) {
@@ -33,4 +29,8 @@ var saveMentor = function (facebookId, language) {
     }
 
   });
+};
+
+module.exports = {
+  saveMentor : saveMentor
 };

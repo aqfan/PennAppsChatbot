@@ -1,11 +1,6 @@
 const User = require('../models/user');
 const request = require('request');
 
-module.exports = {
-  getFacebookData : getFacebookData,
-  saveUser : saveUser
-};
-
 // Get user data Messenger Platform User Profile API and save it on the MongoDB
 var saveUser = function (facebookId, firstName, lastName) {
 
@@ -13,7 +8,8 @@ var saveUser = function (facebookId, firstName, lastName) {
     var user = {
       facebookId : facebookId,
       firstName : firstName || userData.first_name,
-      lastName : lastName || userData.last_name
+      lastName : lastName || userData.last_name,
+      pauseAI : false
     };
 
     User.collection.findOneAndUpdate({
@@ -47,4 +43,9 @@ var getFacebookData = function (facebookId, callback) {
     }
     callback(err, userData);
   });
+};
+
+module.exports = {
+  getFacebookData : getFacebookData,
+  saveUser : saveUser
 };
