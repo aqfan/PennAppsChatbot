@@ -9,7 +9,9 @@ var UserSchema = new Schema({
   },
   firstName : String,
   lastName : String,
-  pauseAI : Boolean
+  pauseAI : Boolean,
+  convoId : String,
+  type : String
 });
 
 module.exports = mongoose.model('User', UserSchema);

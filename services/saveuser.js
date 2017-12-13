@@ -3,13 +3,13 @@ const request = require('request');
 
 // Get user data Messenger Platform User Profile API and save it on the MongoDB
 var saveUser = function (facebookId, firstName, lastName) {
-
   getFacebookData (facebookId, function (err, userData) {
     var user = {
       facebookId : facebookId,
       firstName : firstName || userData.first_name,
       lastName : lastName || userData.last_name,
-      pauseAI : false
+      pauseAI : false,
+      type : 'user'
     };
 
     User.collection.findOneAndUpdate({

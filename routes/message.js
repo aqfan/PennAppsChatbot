@@ -1,5 +1,6 @@
 var User = require('../models/user');
-var parser = require('../services/parsemessages')
+var parser = require('../services/parsemessages');
+var userService = require('../services/saveuser');
 
 var processMessage = function (event) {
   sendMessengerTextMessage(event.sender.id, event.message.text);
@@ -11,11 +12,17 @@ var sendMessengerTextMessage = function (recipientId, messageText) {
     if (err) {
       console.log(err);
     } else {
-      if (!user.pauseAI) {
+      if (user == null) {
+        userService.saveUser(recipientId);
         parser.notPaused(recipientId, messageText);
       } else {
-        parser.paused(recipientId, messageText);
+        if (!user.pauseAI) {
+          parser.notPaused(recipientId, messageText);
+        } else {
+          parser.paused(recipientId, messageText);
+        }
       }
+
     }
   });
 };

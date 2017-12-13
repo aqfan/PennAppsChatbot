@@ -13,6 +13,7 @@ Sample questions and answers:
 | when are applications due | Applications for non-Penn students are due by November 27th, 11:59PM EST |
 | when is the event? | PennAppsXVII is on January 19-21, 2018 |
 | Do I need to cover travel? | Not only will we provide you with a weekend's worth of swag, meals, drinks, and snacks and a place to crash when you need a break from coding, we'll even help cover your travel.|
+| fallback response | Got it! Autoreplies have been paused and I will notify an organizer about your question. You can send "unpause" at anytime to turn on the chatbot. |
 
 Sample request for mentor:
 
@@ -47,15 +48,15 @@ Sample request to be added as a mentor:
   - matches user with a mentor
   - gives user mentor's name
 
- * Automatically answers FAQs
+* Allows user and mentor to chat via Messenger
+
+* Allows user to chat with admin for more specific questions
+
+* Automatically answers FAQs
 
 ### Future features to be implemented
 
-* Allow user and mentor to contact via Messenger
-
-* Subscribe to PennApps news: articles published about PennApps and new social media posts
-
-* Get notifications on dates: application deadlines, reimbursement deadlines, countdown to PennApps
+* Subscribe to PennApps news: articles published about PennApps, new social media posts, deadlines
 
 * Submit photos to be featured on the closing video/live twitter feed
 

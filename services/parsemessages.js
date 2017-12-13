@@ -2,6 +2,7 @@ const API_AI_TOKEN = '5dcd7010f2704620bb22caa7cbd5deef';
 var apiAiClient = require('apiai')(API_AI_TOKEN);
 var request = require('request');
 var User = require('../models/user');
+var Mentor = require('../models/mentor');
 
 var notPaused = function (recipientId, messageText) {
   var apiaiSession = apiAiClient.textRequest(messageText, {
@@ -57,7 +58,7 @@ var notPaused = function (recipientId, messageText) {
 };
 
 var paused = function (recipientId, messageText) {
-  if (messageText.toLowerCase() == 'unpause') {
+  if (messageText.toLowerCase() === 'unpause') {
     User.findOneAndUpdate({
       facebookId : recipientId
     }, {$set: {pauseAI : false}},
@@ -65,12 +66,48 @@ var paused = function (recipientId, messageText) {
       if (err) {
         console.log(err);
       } else {
+        User.update({
+          facebookId : recipientId
+        }, {$set: {convoId: ''}},
+        function (err, raw) {
+          if (err) {
+            console.log(err);
+          } else {
+            if (user.type === 'mentor') {
+              Mentor.findOneAndUpdate({
+                facebookId : recipientId
+              }, {$set: {available : true}},
+              function (err, mentor) {
+                if (err) {
+                  console.log(err);
+                } 
+              });
+            }
+          }
+          sendMessengerResponse({
+            recipient: {
+              id: recipientId
+            },
+            message: {
+              text: 'Unpaused! Auto reply is turned back on.'
+            }
+          });
+        });
+      }
+    });
+  } else {
+    User.findOne({
+      facebookId : recipientId
+    }, function (err, user) {
+      if (err) {
+        console.log(err);
+      } else {
         sendMessengerResponse({
           recipient: {
-            id: recipientId
+            id: user.convoId
           },
           message: {
-            text: 'Unpaused! Auto reply is turned back on'
+            text: messageText
           }
         });
       }
@@ -89,7 +126,7 @@ var sendMessengerResponse = function (messageData) {
     if (error) {
       console.log('Error sending message: ' + response.error);
     } else {
-      console.log('Message sent to' + messageData.recipient.id);
+      console.log('Message sent to ' + messageData.recipient.id);
     }
   });
 };
